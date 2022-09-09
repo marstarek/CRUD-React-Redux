@@ -11,4 +11,4 @@ npm i
 cd project name
 npm run dev
 ## deployed-on
-[deployed]([https:](https://631b4060f6ff15005eaf8c7b--bespoke-gelato-0418d9.netlify.app/))
+[deployed]([https://631b4060f6ff15005eaf8c7b--bespoke-gelato-0418d9.netlify.app/])
