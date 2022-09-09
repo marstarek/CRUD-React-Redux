@@ -5,23 +5,32 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "./userSlice";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const AddUser = () => {
+  const [error, setError] = useState(false);
   const dispatch = useDispatch();
-     let navigate = useNavigate();
+  let navigate = useNavigate();
 
-     const [inputVal, setInputVal] = useState({
-          name: '',
-          email:''
-     });
+  const [inputVal, setInputVal] = useState({
+    name: "",
+    email: "",
+  });
 
-     const addUserHandler = (e) => {
-          e.preventDefault();
-          setInputVal({ name: '', email: '' });
-          dispatch(addUser({id:uuidv4(),name:inputVal.name,email:inputVal.email}))
-          navigate('/')
-     }
+  const addUserHandler = (e) => {
+    e.preventDefault();
+if (inputVal.name&&inputVal.email) {
+  dispatch(
+    addUser({ id: uuidv4(), name: inputVal.name, email: inputVal.email }),
+  );
+  setInputVal({ name: "", email: "" });
+  navigate("/");
+} else {
+  setError(true)
+  return false
+}
+    
+  };
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
@@ -40,9 +49,11 @@ const AddUser = () => {
                 required
                 type="name"
                 placeholder="Enter Your Name "
-                                     className="input input-bordered input-info  relative my-4 block w-full"
-                                     value={inputVal.name}
-                                     onChange={(e)=>setInputVal({...inputVal,name:e.target.value})}
+                className={"input input-bordered input-info  relative my-4 block w-full   "+ (error==true ? 'border-red-900	' : '')}
+                value={inputVal.name}
+                onChange={(e) =>
+                  setInputVal({ ...inputVal, name: e.target.value })
+                }
               />
             </div>
             <div>
@@ -52,17 +63,20 @@ const AddUser = () => {
                 type="email"
                 required
                 placeholder="Enter Your Email"
-                                     className="input input-bordered input-info  relative my-4 block w-full"
-                                     value={inputVal.email}
-                                     onChange={(e)=>setInputVal({...inputVal,email:e.target.value})}
+                className={"input input-bordered input-info  relative my-4 block w-full   "+ (error==true ? 'border-red-900	' : '')}
+                value={inputVal.email}
+                onChange={(e) =>
+                  setInputVal({ ...inputVal, email: e.target.value })
+                }
               />
             </div>
           </div>
 
           <div className="flex justify-center">
             <Button
-            onClick={addUserHandler}
-            className="group relative flex w-full  justify-center py-2 px-4 text-sm font-medium text-white"
+              
+              onClick={addUserHandler}
+              className="group relative flex w-full  justify-center py-2 px-4 text-sm font-medium text-white"
             >
               Add New User
             </Button>

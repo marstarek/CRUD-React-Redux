@@ -8,6 +8,7 @@ import { editUser } from "./userSlice";
 
 const EditUser = () => {
   const dispatch = useDispatch();
+  const [error, setError] = useState(false);
 
   const params = useParams();
   const users = useSelector((store) => store.users);
@@ -20,12 +21,17 @@ const EditUser = () => {
   });
   const editUserHandler = (e) => {
     e.preventDefault();
-    setInputVal({ name: "", email: "" });
-    dispatch(
-      editUser({ id: params.id, name: inputVal.name, email: inputVal.email }),
-    );
+    if (inputVal.name && inputVal.email) {
+      setInputVal({ name: "", email: "" });
+      dispatch(
+        editUser({ id: params.id, name: inputVal.name, email: inputVal.email }),
+      );
 
-    navigate("/");
+      navigate("/");
+    }else {
+      setError(true)
+      return false
+    }
   };
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -44,8 +50,7 @@ const EditUser = () => {
                 type="name"
                 required
                 placeholder="Enter Your Name "
-                className="input input-bordered input-info  relative my-4 block w-full"
-                value={inputVal.name}
+                className={"input input-bordered input-info  relative my-4 block w-full   "+ (error==true ? 'border-red-900	' : '')}                value={inputVal.name}
                 onChange={(e) =>
                   setInputVal({ ...inputVal, name: e.target.value })
                 }
@@ -58,7 +63,7 @@ const EditUser = () => {
                 type="email"
                 required
                 placeholder="Enter Your Email"
-                className="input input-bordered input-info  relative my-4 block w-full"
+                className={"input input-bordered input-info  relative my-4 block w-full   "+ (error==true ? 'border-red-900	' : '')}
                 value={inputVal.email}
                 onChange={(e) =>
                   setInputVal({ ...inputVal, email: e.target.value })
